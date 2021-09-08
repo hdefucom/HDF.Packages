@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net40;netcoreapp2.1;netcoreapp3.1;net5.0;net5.0-windows</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <!--.net5后需要加上平台后缀才能使用特定平台类库-->
+    <UseWindowsForms Condition="'$(TargetFramework)' != 'net5.0'">true</UseWindowsForms>
+
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageIcon>logo.png</PackageIcon>
+    <Authors>DefuHuang</Authors>
+    <Company>HDF</Company>
+    <Description>HDF公共类库，提供基础类型的拓展和一些常用方法。
+HDF public class library provides the expansion of basic types and some common methods.</Description>
+    <Version>0.1.0</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <!--Windows文件夹下的拓展基本都是只用于Windows平台的-->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net40' and '$(TargetFramework)' != 'netcoreapp3.1' and '$(TargetFramework)' != 'net5.0-windows'">
+    <Compile Remove="Windows\*.cs" />
+  </ItemGroup>
+
+
+</Project>

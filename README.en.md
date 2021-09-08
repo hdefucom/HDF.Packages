@@ -1,0 +1,1 @@
+HDF public class library provides the expansion of basic types and some common methods
