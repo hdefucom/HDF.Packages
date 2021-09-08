@@ -18,24 +18,20 @@
     <Description>HDF公共类库，提供基础类型的拓展和一些常用方法。
 HDF public class library provides the expansion of basic types and some common methods.</Description>
     
-    <VersionPrefix>0.2.0</VersionPrefix>
-    <VersionSuffix>preview.1</VersionSuffix>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <!--<VersionSuffix>preview.2</VersionSuffix>-->
     
     
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/hdefucom/HDF.Packages</PackageProjectUrl>
     <RepositoryUrl>https://github.com/hdefucom/HDF.Packages</RepositoryUrl>
     <PackageTags>HDF Common Tool</PackageTags>
     <NeutralLanguage>zh</NeutralLanguage>
     <PackageReleaseNotes>HDF公共类库，提供基础类型的拓展和一些常用方法。</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
     <None Include="logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
