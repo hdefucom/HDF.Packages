@@ -11,10 +11,11 @@ namespace HDF.Common.Windows
     public static class ControlMovePositionExtensions
     {
         /// <summary>
-        /// 绑定控件移动位置的控件，通过绑定鼠标事件实现
+        /// 绑定 控制 控件位置 的 控件集合，如果是自身，则<paramref name="controls"/>参数可为空或者包含<paramref name="control"/>
         /// </summary>
+        /// <remarks>通过绑定鼠标事件实现</remarks>
         /// <param name="control">移动位置的目标控件，例如无边框的Form</param>
-        /// <param name="controls">操控位置的控件集合，例如自定义的FormTItlePanel</param>
+        /// <param name="controls">操控位置的控件集合，例如自定义的FormTItlePanel，如果为空或者传递<paramref name="control"/>则自身控制</param>
         /// <exception cref="ArgumentException"/>
         /// <exception cref="ArgumentNullException"/>
         public static void BindMovePositionControls(this Control control, params Control[] controls)
@@ -22,10 +23,13 @@ namespace HDF.Common.Windows
             if (control == null)
                 throw new ArgumentNullException(nameof(control));
 
+            if (controls.IsNullOrEmpty())
+                BindEvent(control, control);
+
             foreach (var c in controls)
             {
                 var c1 = c;
-                while (c1.Parent != control)
+                while (c1.Parent != control && c1 != control)
                 {
                     if (c1.Parent == null)
                         throw new ArgumentException("绑定的控件不是目标控件的子控件", nameof(controls));
