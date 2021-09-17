@@ -1,13 +1,12 @@
-using System;
-using Xunit;
+using NUnit.Framework;
 
-namespace HDF.Common.Test.xUnit
+namespace HDF.Common.Test.NUnit
 {
     public class StringExtensionsTest
     {
 
 
-        [Fact]
+        [Test]
         public void IsNullOrEmptyTest()
         {
             var res = "吃了没".IsNullOrEmpty();
@@ -23,7 +22,7 @@ namespace HDF.Common.Test.xUnit
             Assert.True(res);
         }
 
-        [Fact]
+        [Test]
         public void IsNullOrWhiteSpaceTest()
         {
             var res = "吃了没".IsNullOrWhiteSpace();
@@ -39,29 +38,32 @@ namespace HDF.Common.Test.xUnit
             Assert.True(res);
         }
 
-        [Fact]
+        [Test]
         public void ToSnakeCaseTest()
         {
             var res = "吃了没".ToSnakeCase();
-            Assert.Equal("吃了没", res);
+            Assert.AreEqual("吃了没", res);
 
             res = "HuangDeFu".ToSnakeCase();
-            Assert.Equal("huang_de_fu", res);
+            Assert.AreEqual("huang_de_fu", res);
 
             res = "HUANGDEFU".ToSnakeCase();
-            Assert.Equal("huangdefu", res);
+            Assert.AreEqual("huangdefu", res);
 
             res = "HuangDEFU".ToSnakeCase();
-            Assert.Equal("huang_defu", res);
+            Assert.AreEqual("huang_defu", res);
+
+            res = "HuangDEFU".ToSnakeCase();
+            Assert.AreEqual("huang_defu", res);
 
             res = string.Empty.ToSnakeCase();
-            Assert.Equal(string.Empty, res);
+            Assert.AreEqual(string.Empty, res);
 
             res = ((string)null).ToSnakeCase();
             Assert.Null(res);
 
             res = " ".ToSnakeCase();
-            Assert.Equal(" ", res);
+            Assert.AreEqual(" ", res);
         }
 
 
