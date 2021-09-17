@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31605.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDF.Common", "HDF.Common\HDF.Common.csproj", "{6D35850A-26FF-4D01-A1D0-4B94676B57EA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{C637F924-47A6-4E9F-8947-DACB6A8A6A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF.Common", "HDF.Common\HDF.Common.csproj", "{6D35850A-26FF-4D01-A1D0-4B94676B57EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{547F851B-36E1-4607-A0E6-9BD008FA7868}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{54
 		README.en.md = README.en.md
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{66081A7A-488B-425C-901C-AC8A96D84E82}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF.Common.Test.xUnit", "Test\HDF.Common.Test.xUnit\HDF.Common.Test.xUnit.csproj", "{3EEDED39-4949-4E17-A79A-1F67D76C1A1E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF.Common.Test.NUnit", "Test\HDF.Common.Test.NUnit\HDF.Common.Test.NUnit.csproj", "{4FE9DF49-57DB-4628-81BA-237AC02AAD08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,13 +28,21 @@ Global
 		{6D35850A-26FF-4D01-A1D0-4B94676B57EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D35850A-26FF-4D01-A1D0-4B94676B57EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D35850A-26FF-4D01-A1D0-4B94676B57EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C637F924-47A6-4E9F-8947-DACB6A8A6A8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C637F924-47A6-4E9F-8947-DACB6A8A6A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C637F924-47A6-4E9F-8947-DACB6A8A6A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C637F924-47A6-4E9F-8947-DACB6A8A6A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EEDED39-4949-4E17-A79A-1F67D76C1A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EEDED39-4949-4E17-A79A-1F67D76C1A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EEDED39-4949-4E17-A79A-1F67D76C1A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EEDED39-4949-4E17-A79A-1F67D76C1A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE9DF49-57DB-4628-81BA-237AC02AAD08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE9DF49-57DB-4628-81BA-237AC02AAD08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE9DF49-57DB-4628-81BA-237AC02AAD08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE9DF49-57DB-4628-81BA-237AC02AAD08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3EEDED39-4949-4E17-A79A-1F67D76C1A1E} = {66081A7A-488B-425C-901C-AC8A96D84E82}
+		{4FE9DF49-57DB-4628-81BA-237AC02AAD08} = {66081A7A-488B-425C-901C-AC8A96D84E82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {726BD3AB-8BAA-4833-A0D5-7E4566AE693B}

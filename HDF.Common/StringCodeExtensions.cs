@@ -89,6 +89,8 @@ namespace HDF.Common
             {
                 // 若是字母或数字则直接输出
                 if (c is (>= 'a' and <= 'z') or (>= 'A' and <= 'Z') or (>= '0' and <= '9'))
+                //C#9.0的新语法无法通过测试用例
+                //if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
                 {
                     builder.Append(char.ToUpper(c));
                     continue;
