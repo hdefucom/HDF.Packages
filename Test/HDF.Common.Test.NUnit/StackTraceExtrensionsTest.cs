@@ -24,7 +24,7 @@ namespace HDF.Common.Test.NUnit
 
             Assert.False(StackTraceExtrensions.CheckRecursion());
 
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => StackTraceExtrensions.CheckRecursion(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => StackTraceExtrensions.CheckRecursion(-1));
         }
 
         private bool RecursionMethod(int count)
