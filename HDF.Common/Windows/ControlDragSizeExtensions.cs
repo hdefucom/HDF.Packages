@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace HDF.Framework.Common.WinForm
+namespace HDF.Common.Windows
 {
     /// <summary>
     /// 控件拖拽大小拓展
@@ -41,8 +41,8 @@ namespace HDF.Framework.Common.WinForm
                 case WM_NCHITTEST:
                     //必须最后转成int16，多屏幕情况下坐标可能是负数，位运算得到结果是int16，如果使用int32，就无法使溢出的int16得到正确的坐标
                     var vPoint = new Point(
-                        (Int16)((int)m.LParam & 0xFFFF),
-                        (Int16)((int)m.LParam >> 16 & 0xFFFF)
+                        (short)((int)m.LParam & 0xFFFF),
+                        (short)((int)m.LParam >> 16 & 0xFFFF)
                         );
                     vPoint = control.PointToClient(vPoint);
                     if (vPoint.X <= 5)
