@@ -16,26 +16,30 @@ namespace HDF.Common
         /// 将传入字符串以GZip算法压缩
         /// </summary>
         /// <param name="value">需要压缩的字符串</param>
+        /// <param name="encoding">需要压缩字符的编码</param>
         /// <returns>压缩后的Base64编码的字符串</returns>
-        public static string GZipCompressString(this string value)
+        public static string GZipCompressString(this string value, Encoding? encoding = null)
         {
             if (value.IsNullOrEmpty())
                 return string.Empty;
 
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(value).Compress());
+            encoding ??= Encoding.Default;
+            return Convert.ToBase64String(encoding.GetBytes(value).Compress());
         }
 
         /// <summary>
         /// 将传入的Base64字符串以GZip算法解压
         /// </summary>
         /// <param name="value">经GZip压缩后的Base64字符串</param>
+        /// <param name="encoding">需要解压字符的编码</param>
         /// <returns>原始未压缩字符串</returns>
-        public static string GZipDecompressString(this string value)
+        public static string GZipDecompressString(this string value, Encoding? encoding = null)
         {
             if (value.IsNullOrEmpty())
                 return string.Empty;
 
-            return Encoding.UTF8.GetString(Convert.FromBase64String(value).Decompress());
+            encoding ??= Encoding.Default;
+            return encoding.GetString(Convert.FromBase64String(value).Decompress());
         }
 
         /// <summary>
