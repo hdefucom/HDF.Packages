@@ -51,7 +51,7 @@ namespace HDF.Common.Test.NUnit
             Assert.NotNull(typeof(Test).GetCustomAttribute<AAttribute>(true));
         }
 
-
+        [AttributeUsage(AttributeTargets.Class)]
         private class AAttribute : Attribute { }
 
         [A]
