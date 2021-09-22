@@ -32,12 +32,12 @@ namespace HDF.Common.Test.xUnit
 
 
             var deltablesql = $@"
-if exists(select * from sysObjects where name='test{version}' and xtype='U' )
+if exists(select * from sysObjects where name='simple_test{version}' and xtype='U' )
 begin
- drop table test{version};
+ drop table simple_test{version};
 end
 
-CREATE TABLE [dbo].[test{version}](
+CREATE TABLE [dbo].[simple_test{version}](
 	[id] [int] NULL
 ) ON [PRIMARY]
 
@@ -46,23 +46,23 @@ select '1'
 
             Assert.NotNull(deltablesql.ExecuteScalar());
 
-            Assert.Equal(1, $"insert into test{version} values('1')".ExecuteNonQuery());
+            Assert.Equal(1, $"insert into simple_test{version} values('1')".ExecuteNonQuery());
 
             var param = "@id".CreateParameter("1");
-            using var reader = $"select * from test{version} where '1'=@id".ExecuteReader(CommandType.Text, param);
+            using var reader = $"select * from simple_test{version} where '1'=@id".ExecuteReader(CommandType.Text, param);
             Assert.True(reader.Read());
             Assert.Equal("1", reader["id"].ToString());
 
             param = "@id".CreateParameter("1");
-            var dt = $"select * from test{version} where '1'=@id".ExecuteAdapter(CommandType.Text, param);
+            var dt = $"select * from simple_test{version} where '1'=@id".ExecuteAdapter(CommandType.Text, param);
             Assert.Equal("1", dt.Rows[0][0].ToString());
 
             param = "@id".CreateParameter("1");
-            Assert.Equal(1, $"delete from test{version} where '1'=@id".ExecuteNonQueryInTran(i => i > 0, CommandType.Text, param));
-            Assert.Equal(1, $"insert into test{version} values('2')".ExecuteNonQueryInTran(i => false));
+            Assert.Equal(1, $"delete from simple_test{version} where '1'=@id".ExecuteNonQueryInTran(i => i > 0, CommandType.Text, param));
+            Assert.Equal(1, $"insert into simple_test{version} values('2')".ExecuteNonQueryInTran(i => false));
 
             param = "@id".CreateParameter("1", DbType.String);
-            Assert.True($"delete from test{version} where '1'=@id".ExecuteNonQuery(CommandType.Text, param) > 0);
+            Assert.True($"delete from simple_test{version} where '1'=@id".ExecuteNonQuery(CommandType.Text, param) > 0);
 
 
         }
