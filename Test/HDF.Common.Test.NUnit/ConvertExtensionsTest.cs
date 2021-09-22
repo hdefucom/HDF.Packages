@@ -21,7 +21,7 @@ namespace HDF.Common.Test.NUnit
         [Test]
         public void AsTest()
         {
-            Assert.IsAssignableFrom<IComparable>("".As<IComparable>());
+            Assert.IsAssignableFrom<string>(((IComparable)string.Empty).As<string>());
             Assert.IsInstanceOf<Child>(((Parent)new Child()).As<Child>());
         }
 
