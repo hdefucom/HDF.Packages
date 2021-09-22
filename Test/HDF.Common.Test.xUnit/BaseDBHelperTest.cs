@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data.SqlClient;
 using Xunit;
 using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace HDF.Common.Test.xUnit
 {
