@@ -173,46 +173,6 @@ namespace HDF.Common
 
         #region ExecuteInTransaction
 
-        //private T ExecuteInTran<T>(Func<DbCommand, T> func, Func<T, bool> isRollback, string sql, CommandType commandType, params DbParameter[] parameters)
-        //{
-        //    if (sql.IsNullOrWhiteSpace())
-        //        throw new ArgumentNullException(nameof(sql));
-
-        //    if (isRollback == null)
-        //        throw new ArgumentNullException(nameof(isRollback));
-
-        //    using var conn = DbProviderFactory.CreateConnection()!;
-        //    conn.ConnectionString = ConnectionString;
-
-        //    if (conn.State != ConnectionState.Open) conn.Open();
-
-        //    using DbCommand cmd = conn.CreateCommand();
-
-        //    using DbTransaction transaction = conn.BeginTransaction();
-
-        //    cmd.CommandText = sql;
-        //    cmd.CommandType = commandType;
-        //    cmd.Transaction = transaction;
-        //    if (parameters?.Length > 0)
-        //        cmd.Parameters.AddRange(parameters);
-
-        //    try
-        //    {
-        //        T t = func.Invoke(cmd);
-
-        //        if (isRollback.Invoke(t))
-        //            transaction.Commit();
-        //        else
-        //            transaction.Rollback();
-        //        return t;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        transaction.Rollback();
-        //        throw;
-        //    }
-        //}
-
         /// <summary>
         /// 在事务中执行sql并返回受影响行数
         /// </summary>

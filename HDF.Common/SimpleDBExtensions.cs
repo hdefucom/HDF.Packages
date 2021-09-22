@@ -10,36 +10,36 @@ namespace HDF.Common
     /// <summary>
     /// 简单的ADO拓展，适用于单个数据库
     /// </summary>
-    public static class SimpleDBExtensions
+    public static class SimpleDBExtensions//<T> where T : DbProviderFactory
     {
+        /// <summary>
+        /// 初始化SimpleDBExtensions
+        /// </summary>
+        /// <exception cref="ArgumentNullException"/>
+        public static void Init(DbProviderFactory factory, string connectionString)
+        {
+            DbProviderFactory = factory ?? throw new ArgumentNullException(nameof(factory));
+            ConnectionString = connectionString.IsNullOrWhiteSpace() ? throw new ArgumentNullException(nameof(connectionString)) : connectionString;
+        }
+
 
         /// <summary>
         /// 表示一组方法用于创建数据源类的提供程序的实现。
         /// </summary>
-        public static DbProviderFactory? DbProviderFactory { get; set; }
+        public static DbProviderFactory? DbProviderFactory { get; private set; }
 
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        public static string? ConnectionString { get; set; }
+        public static string? ConnectionString { get; private set; }
 
 
-        /// <summary>
-        /// 初始化<see cref="DbProviderFactory"/>和<see cref="ConnectionString"/>
-        /// </summary>
-        /// <param name="factory"></param>
-        /// <param name="connectionString"></param>
-        /// <exception cref="ArgumentNullException"/>
-        public static void Init(DbProviderFactory factory, string connectionString)
+        private static void CheckObject()
         {
-            if (factory is null)
-                throw new ArgumentNullException(nameof(factory));
-
-            if (connectionString.IsNullOrWhiteSpace())
-                throw new ArgumentNullException(nameof(connectionString));
-
-            DbProviderFactory = factory;
-            ConnectionString = connectionString;
+            if (DbProviderFactory == null)
+                throw new NullReferenceException("请先调用Init初始化");
+            //if (ConnectionString.IsNullOrWhiteSpace())
+            //    throw new NullReferenceException("请先调用Init初始化");
         }
 
 
@@ -51,14 +51,10 @@ namespace HDF.Common
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="NullReferenceException"/>
-        public static DbParameter CreateParameter(string name, string value)
+        public static DbParameter CreateParameter(this string name, string value)
         {
-            if (DbProviderFactory == null)
-                throw new NullReferenceException(nameof(DbProviderFactory));
-
-            var parameter = DbProviderFactory.CreateParameter();
-            if (parameter is null)
-                throw new NullReferenceException("创建的DbParameter为null");
+            CheckObject();
+            DbParameter parameter = DbProviderFactory!.CreateParameter()!;
             parameter.ParameterName = name;
             parameter.Value = value;
             return parameter;
@@ -72,16 +68,10 @@ namespace HDF.Common
         /// <param name="type">参数类型</param>
         /// <returns>sql参数对象</returns>
         /// <exception cref="ArgumentNullException"/>
-        public static DbParameter CreateParameter(string name, string value, DbType type)
+        public static DbParameter CreateParameter(this string name, string value, DbType type)
         {
-            if (DbProviderFactory is null)
-                throw new NullReferenceException(nameof(DbProviderFactory));
-
-            var parameter = DbProviderFactory.CreateParameter();
-
-            if (parameter is null)
-                throw new NullReferenceException("创建的DbParameter为null");
-
+            CheckObject();
+            var parameter = DbProviderFactory!.CreateParameter()!;
             parameter.DbType = type;
             parameter.ParameterName = name;
             parameter.Value = value;
@@ -93,27 +83,19 @@ namespace HDF.Common
 
         private static TResult Execute<TResult>(Func<DbCommand, TResult> func, string sql, CommandType commandType, params DbParameter[] parameters)
         {
+            CheckObject();
+
             if (sql.IsNullOrWhiteSpace())
                 throw new ArgumentNullException(nameof(sql));
 
-            if (DbProviderFactory is null)
-                throw new NullReferenceException(nameof(DbProviderFactory));
-
-            if (ConnectionString.IsNullOrWhiteSpace())
-                throw new NullReferenceException(nameof(ConnectionString));
-
-            using var conn = DbProviderFactory.CreateConnection();
-
-            if (conn is null)
-                throw new NullReferenceException("创建的DbConnection为null");
-
+            using var conn = DbProviderFactory!.CreateConnection()!;
             conn.ConnectionString = ConnectionString;
             if (conn.State != ConnectionState.Open) conn.Open();
 
             using DbCommand cmd = conn.CreateCommand();
             cmd.CommandText = sql;
             cmd.CommandType = commandType;
-            if (parameters?.Length > 0)
+            if (!parameters.IsNullOrEmpty())
                 cmd.Parameters.AddRange(parameters);
             try
             {
@@ -133,7 +115,6 @@ namespace HDF.Common
         /// <param name="parameters">sql参数</param>
         /// <returns>受影响的行数</returns>
         /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="NullReferenceException"/>
         public static int ExecuteNonQuery(this string sql, CommandType commandType = CommandType.Text, params DbParameter[] parameters) => Execute(cmd => cmd.ExecuteNonQuery(), sql, commandType, parameters);
 
         /// <summary>
@@ -144,7 +125,6 @@ namespace HDF.Common
         /// <param name="parameters">sql参数</param>
         /// <returns>结果集的第一行的第一列</returns>
         /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="NullReferenceException"/>
         public static object? ExecuteScalar(this string sql, CommandType commandType = CommandType.Text, params DbParameter[] parameters) => Execute(cmd => cmd.ExecuteScalar(), sql, commandType, parameters);
 
         /// <summary>
@@ -155,8 +135,31 @@ namespace HDF.Common
         /// <param name="parameters">sql参数</param>
         /// <returns>一个<see cref="DbDataReader"/>对象</returns>
         /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="NullReferenceException"/>
-        public static DbDataReader ExecuteReader(this string sql, CommandType commandType = CommandType.Text, params DbParameter[] parameters) => Execute(cmd => cmd.ExecuteReader(), sql, commandType, parameters);
+        public static DbDataReader ExecuteReader(this string sql, CommandType commandType = CommandType.Text, params DbParameter[] parameters)
+        {
+            CheckObject();
+
+            if (sql.IsNullOrWhiteSpace())
+                throw new ArgumentNullException(nameof(sql));
+
+            var conn = DbProviderFactory!.CreateConnection()!;
+            conn.ConnectionString = ConnectionString;
+            if (conn.State != ConnectionState.Open) conn.Open();
+
+            DbCommand cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            cmd.CommandType = commandType;
+            if (!parameters.IsNullOrEmpty())
+                cmd.Parameters.AddRange(parameters);
+            try
+            {
+                return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         /// <summary>
         /// 执行sql，返回一个<see cref="DataTable"/>对象
@@ -167,82 +170,42 @@ namespace HDF.Common
         /// <returns>一个<see cref="DataTable"/>对象</returns>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="NullReferenceException"/>
-        public static DataTable ExecuteAdapter(this string sql, CommandType commandType = CommandType.Text, params DbParameter[] parameters)
-        {
-            if (DbProviderFactory is null)
-                throw new NullReferenceException(nameof(DbProviderFactory));
-
-            if (ConnectionString.IsNullOrWhiteSpace())
-                throw new NullReferenceException(nameof(ConnectionString));
-
-            return Execute(cmd =>
+        public static DataTable ExecuteAdapter(this string sql, CommandType commandType = CommandType.Text, params DbParameter[] parameters) =>
+            Execute(cmd =>
             {
                 DataTable dt = new();
-                var adapter = DbProviderFactory.CreateDataAdapter();
-                if (adapter is null)
-                    throw new NullReferenceException("创建的DbDataAdapter为null");
+                var adapter = DbProviderFactory!.CreateDataAdapter()!;
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dt);
                 return dt;
             }, sql, commandType, parameters);
-        }
 
-        /// <summary>
-        /// 更新DataTable到数据库
-        /// </summary>
-        /// <param name="sql">SelectQuery</param>
-        /// <param name="data">DataSourse</param>
-        /// <returns>更新的行数</returns>
-        /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="NullReferenceException"/>
-        public static int AdapterUpdate(string sql, DataTable data)
-        {
-            if (DbProviderFactory is null)
-                throw new NullReferenceException(nameof(DbProviderFactory));
-
-            if (ConnectionString.IsNullOrWhiteSpace())
-                throw new NullReferenceException(nameof(ConnectionString));
-
-            return Execute(cmd =>
-            {
-                var adapter = DbProviderFactory.CreateDataAdapter();
-
-                if (adapter is null)
-                    throw new NullReferenceException("创建的DbDataAdapter为null");
-
-                adapter.SelectCommand = cmd;
-
-                var builder = DbProviderFactory.CreateCommandBuilder();
-
-                if (builder is null)
-                    throw new NullReferenceException("创建的DbCommandBuilder为null");
-
-                builder.DataAdapter = adapter;
-
-                return adapter.Update(data);
-            }, sql, CommandType.Text);
-        }
 
         #endregion
 
         #region ExecuteInTransaction
 
-        private static T ExecuteInTran<T>(Func<DbCommand, T> func, Func<T, bool> isRollback, string sql, CommandType commandType, params DbParameter[] parameters)
+        /// <summary>
+        /// 在事务中执行sql并返回受影响行数
+        /// </summary>
+        /// <param name="sql">执行的sql或存储过程（多条sql使用分号间隔）</param>
+        /// <param name="isRollback">一个返回值为bool的委托，用于确定事务是否回滚，返回true则回滚事务</param>
+        /// <param name="commandType">sql类型</param>
+        /// <param name="parameters">sql参数</param>
+        /// <returns>受影响行数</returns>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="NullReferenceException"/>
+        public static int ExecuteNonQueryInTran(this string sql, Func<int, bool> isRollback, CommandType commandType = CommandType.Text, params DbParameter[] parameters)
         {
+            CheckObject();
+
             if (sql.IsNullOrWhiteSpace())
                 throw new ArgumentNullException(nameof(sql));
 
-            if (DbProviderFactory is null)
-                throw new NullReferenceException(nameof(DbProviderFactory));
+            if (isRollback == null)
+                throw new ArgumentNullException(nameof(isRollback));
 
-            if (ConnectionString.IsNullOrWhiteSpace())
-                throw new NullReferenceException(nameof(ConnectionString));
-
-            using var conn = DbProviderFactory.CreateConnection();
-
-            if (conn is null)
-                throw new NullReferenceException("创建的DbConnection为null");
-
+            using var conn = DbProviderFactory!.CreateConnection()!;
             conn.ConnectionString = ConnectionString;
 
             if (conn.State != ConnectionState.Open) conn.Open();
@@ -254,39 +217,24 @@ namespace HDF.Common
             cmd.CommandText = sql;
             cmd.CommandType = commandType;
             cmd.Transaction = transaction;
-            if (parameters?.Length > 0)
+            if (!parameters.IsNullOrEmpty())
                 cmd.Parameters.AddRange(parameters);
 
             try
             {
-                T t = func.Invoke(cmd);
+                var i = cmd.ExecuteNonQuery();
 
-                if (isRollback.Invoke(t))
+                if (!isRollback.Invoke(i))
                     transaction.Commit();
                 else
                     transaction.Rollback();
-                return t;
+                return i;
             }
             catch (Exception)
             {
-                transaction?.Rollback();
+                transaction.Rollback();
                 throw;
             }
-        }
-
-        /// <summary>
-        /// 在事务中执行sql并返回受影响行数
-        /// </summary>
-        /// <param name="sql">执行的sql或存储过程（多条sql使用分号间隔）</param>
-        /// <param name="isRollback">一个返回值为bool的委托，用于确定事务是否回滚</param>
-        /// <param name="commandType">sql类型</param>
-        /// <param name="parameters">sql参数</param>
-        /// <returns>受影响行数</returns>
-        /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="NullReferenceException"/>
-        public static int ExecuteNonQueryInTran(this string sql, Func<int, bool> isRollback, CommandType commandType = CommandType.Text, params DbParameter[] parameters)
-        {
-            return ExecuteInTran(cmd => cmd.ExecuteNonQuery(), isRollback, sql, commandType, parameters);
         }
 
         #endregion
