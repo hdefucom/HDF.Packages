@@ -71,7 +71,7 @@ namespace HDF.Common
         /// <param name="to">目标语种</param>
         /// <returns>返回api的json字符，该json为<see cref="BaiduTranslateApiResult"/>，可自行序列化</returns>
         /// <exception cref="ArgumentNullException"/>
-        public static string? BaiduTranslate(string value, string from = "auto", string to = "auto")
+        public static string? BaiduTranslate(this string value, string from = "auto", string to = "auto")
         {
             if (value is null)
                 throw new ArgumentNullException(nameof(value));
@@ -125,7 +125,7 @@ namespace HDF.Common
         /// <returns></returns>
         /// <returns>返回api的json字符，该json为<see cref="BaiduLanguageApiResult"/>，可自行序列化</returns>
         /// <exception cref="ArgumentNullException"/>
-        public static string? Language(string value)
+        public static string? BaiduLanguage(this string value)
         {
             if (value is null)
                 throw new ArgumentNullException(nameof(value));
