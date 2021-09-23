@@ -28,7 +28,9 @@ namespace HDF.Common.Windows
         /// <summary>
         /// 设置鼠标拖动边框修改控件大小
         /// </summary>
-        /// <remarks>重写WndProc，调用后此方法后不可再调用base.WndProc()，否则无效</remarks>
+        /// <remarks>
+        /// 重写WndProc，调用后此方法后不可再调用base.WndProc()，否则无效<br/>
+        /// 如果设置isSetDragPostion为true，由于使用拦截WM_NCHITTEST消息返回HTCAPTION实现，所以会导致该组件的鼠标事件失效</remarks>
         /// <param name="control"></param>
         /// <param name="m"></param>
         /// <param name="isSetDragPostion">是否设置鼠标拖拽移动位置</param>
