@@ -18,7 +18,7 @@
     <Description>HDF公共类库，提供基础类型的拓展和一些常用方法。
 HDF public class library provides the expansion of basic types and some common methods.</Description>
     
-    <VersionPrefix>1.2.1</VersionPrefix>
+    <VersionPrefix>1.3.0</VersionPrefix>
     <!--<VersionSuffix>preview.2</VersionSuffix>-->
     
     
