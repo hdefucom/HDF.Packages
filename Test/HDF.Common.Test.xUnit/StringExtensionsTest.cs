@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace HDF.Common.Test.xUnit
@@ -62,6 +64,18 @@ namespace HDF.Common.Test.xUnit
 
             res = " ".ToSnakeCase();
             Assert.Equal(" ", res);
+        }
+
+        [Fact]
+        public void JoinTest()
+        {
+            var res = Enumerable.Range(0, 10).Select(i => i.ToString()).Join("");
+            Assert.Equal("0123456789", res);
+
+            res = Enumerable.Range(0, 10).Select(i => i.ToString()).Join(",");
+            Assert.Equal("0,1,2,3,4,5,6,7,8,9", res);
+
+            Assert.Throws<ArgumentNullException>(() => ((IEnumerable<string>)null).Join(","));
         }
 
 

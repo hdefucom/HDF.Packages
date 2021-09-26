@@ -1,4 +1,7 @@
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HDF.Common.Test.NUnit
 {
@@ -66,6 +69,18 @@ namespace HDF.Common.Test.NUnit
             Assert.AreEqual(" ", res);
         }
 
+
+        [Test]
+        public void JoinTest()
+        {
+            var res = Enumerable.Range(0, 10).Select(i => i.ToString()).Join("");
+            Assert.AreEqual("0123456789", res);
+
+            res = Enumerable.Range(0, 10).Select(i => i.ToString()).Join(",");
+            Assert.AreEqual("0,1,2,3,4,5,6,7,8,9", res);
+
+            Assert.Throws<ArgumentNullException>(() => ((IEnumerable<string>)null).Join(","));
+        }
 
     }
 }
