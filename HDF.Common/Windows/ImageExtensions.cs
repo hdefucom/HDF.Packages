@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace HDF.Common.Windows
+﻿namespace HDF.Common.Windows
 {
     /// <summary>
     /// 图像拓展
