@@ -35,6 +35,17 @@ namespace HDF.Common
 
             return Regex.Replace(value, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
         }
+
+        /// <summary>
+        /// 串联集合的字符，其中在每个字符之间使用指定的分隔符
+        /// </summary>
+        /// <param name="values">一个包含要串联的字符的集合</param>
+        /// <param name="separator">分隔符</param>
+        /// <returns>一个由 values 的元素组成的字符串，这些元素以 separator 字符串分隔</returns>
+        /// <exception cref="ArgumentNullException"/>
+        public static string Join(this IEnumerable<string> values, string separator) => string.Join(separator, values);
+
+
     }
 
 
