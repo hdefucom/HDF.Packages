@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace HDF.Common.Windows
@@ -16,7 +16,9 @@ namespace HDF.Common.Windows
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static bool IsDesignMode(this Control c) => c.Site.DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+        public static bool IsDesignMode(this Control c) => c.Site.DesignMode
+            || LicenseManager.UsageMode == LicenseUsageMode.Designtime
+            || Process.GetCurrentProcess().ProcessName == "devenv";
 
 
 
