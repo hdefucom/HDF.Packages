@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+#if !NET40
+using System.Net.Http;
+#endif
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace HDF.Common
@@ -101,6 +105,8 @@ namespace HDF.Common
             url.Append("&appid=" + BaiduAppId);
             url.Append("&salt=" + salt);
             url.Append("&sign=" + sign);
+
+#if NET40
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url.ToString());
             request.Method = "GET";
             request.ContentType = "text/html;charset=UTF-8";
@@ -108,6 +114,12 @@ namespace HDF.Common
             request.Timeout = 6000;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             using Stream myResponseStream = response.GetResponseStream();
+#else
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/html"));
+            var res = client.GetAsync(url.ToString()).Result;
+            var myResponseStream = res.Content.ReadAsStreamAsync().Result;
+#endif
 
             StreamReader myStreamReader = new(myResponseStream, Encoding.GetEncoding("utf-8"));
             string retString = myStreamReader.ReadToEnd();
@@ -153,6 +165,8 @@ namespace HDF.Common
             url.Append("&appid=" + BaiduAppId);
             url.Append("&salt=" + salt);
             url.Append("&sign=" + sign);
+
+#if NET40
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url.ToString());
             request.Method = "GET";
             request.ContentType = "text/html;charset=UTF-8";
@@ -160,6 +174,12 @@ namespace HDF.Common
             request.Timeout = 6000;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             using Stream myResponseStream = response.GetResponseStream();
+#else
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/html"));
+            var res = client.GetAsync(url.ToString()).Result;
+            var myResponseStream = res.Content.ReadAsStreamAsync().Result;
+#endif
 
             StreamReader myStreamReader = new(myResponseStream, Encoding.GetEncoding("utf-8"));
             string retString = myStreamReader.ReadToEnd();
@@ -190,6 +210,110 @@ namespace HDF.Common
         }
 
 
+#if !NET40
+
+        /// <summary>
+        /// 百度--通用翻译api<br/>
+        /// 使用前先设置<see cref="BaiduAppId"/>和<see cref="BaiduKey"/>
+        /// </summary>
+        /// <param name="value">需要翻译的字符</param>
+        /// <param name="from">字符语种</param>
+        /// <param name="to">目标语种</param>
+        /// <returns>返回api的json字符，该json为<see cref="BaiduTranslateApiResult"/>，可自行序列化</returns>
+        /// <exception cref="ArgumentNullException"/>
+        public static async Task<string?> BaiduTranslateAsync(this string value, string from = "auto", string to = "auto")
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (BaiduAppId.IsNullOrWhiteSpace())
+                return await Task.FromResult<string?>(null);
+            if (BaiduKey.IsNullOrWhiteSpace())
+                return await Task.FromResult<string?>(null);
+
+            // 原文
+            string q = value;
+            // 源语言
+            //string from = "en";
+            // 目标语言
+            //string to = "zh";
+            // 改成您的APP ID
+            //string appId = "";
+            Random rd = new();
+            string salt = rd.Next(100000).ToString();
+            // 改成您的密钥
+            //string secretKey = "";
+            string sign = EncryptString(BaiduAppId + q + salt + BaiduKey);
+            StringBuilder url = new("http://api.fanyi.baidu.com/api/trans/vip/translate?");
+            url.Append("q=" + HttpUtility.UrlEncode(q));
+            url.Append("&from=" + from);
+            url.Append("&to=" + to);
+            url.Append("&appid=" + BaiduAppId);
+            url.Append("&salt=" + salt);
+            url.Append("&sign=" + sign);
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/html"));
+            var res = await client.GetAsync(url.ToString());
+            var myResponseStream = await res.Content.ReadAsStreamAsync();
+            StreamReader myStreamReader = new(myResponseStream, Encoding.GetEncoding("utf-8"));
+            string retString = await myStreamReader.ReadToEndAsync();
+            myStreamReader.Close();
+            myResponseStream.Close();
+
+            return retString;
+        }
+
+        /// <summary>
+        /// 百度--语种识别api<br/>
+        /// 使用前先设置<see cref="BaiduAppId"/>和<see cref="BaiduKey"/>
+        /// </summary>
+        /// <param name="value">要识别的字符</param>
+        /// <returns></returns>
+        /// <returns>返回api的json字符，该json为<see cref="BaiduLanguageApiResult"/>，可自行序列化</returns>
+        /// <exception cref="ArgumentNullException"/>
+        public static async Task<string?> BaiduLanguageAsync(this string value)
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (BaiduAppId.IsNullOrWhiteSpace())
+                return await Task.FromResult<string?>(null);
+            if (BaiduKey.IsNullOrWhiteSpace())
+                return await Task.FromResult<string?>(null);
+
+            // 原文
+            string q = value;
+            // 源语言
+            //string from = "en";
+            // 目标语言
+            //string to = "zh";
+            // 改成您的APP ID
+            //string appId = "";
+            Random rd = new();
+            string salt = rd.Next(100000).ToString();
+            // 改成您的密钥
+            //string secretKey = "";
+            string sign = EncryptString(BaiduAppId + q + salt + BaiduKey);
+            StringBuilder url = new("http://api.fanyi.baidu.com/api/trans/vip/language?");
+            url.Append("q=" + HttpUtility.UrlEncode(q));
+            url.Append("&appid=" + BaiduAppId);
+            url.Append("&salt=" + salt);
+            url.Append("&sign=" + sign);
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/html"));
+            var res = await client.GetAsync(url.ToString());
+            var myResponseStream = await res.Content.ReadAsStreamAsync();
+            StreamReader myStreamReader = new(myResponseStream, Encoding.GetEncoding("utf-8"));
+            string retString = await myStreamReader.ReadToEndAsync();
+            myStreamReader.Close();
+            myResponseStream.Close();
+
+            return retString;
+        }
+
+
+
+#endif
 
 
 

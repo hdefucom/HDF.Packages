@@ -21,7 +21,7 @@ namespace HDF.Common
             if (value.IsNullOrEmpty())
                 return string.Empty;
 
-            using MD5 md5 = new MD5CryptoServiceProvider();
+            using MD5 md5 = MD5.Create();
             byte[] bytes = Encoding.Default.GetBytes(value);
             byte[] encryptdata = md5.ComputeHash(bytes);
             var res = is32 ? BitConverter.ToString(encryptdata) : BitConverter.ToString(encryptdata, 4, 8);
