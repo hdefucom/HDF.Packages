@@ -83,7 +83,7 @@ public class ObjectFormatProvider : IFormatProvider, ICustomFormatter
     /// <param name="arg"></param>
     /// <param name="formatProvider"></param>
     /// <returns></returns>
-    public string Format(string? format, object? arg, IFormatProvider? formatProvider)
+    public virtual string Format(string? format, object? arg, IFormatProvider? formatProvider)
     {
         if (format == null)
             throw new ArgumentNullException(nameof(format));
