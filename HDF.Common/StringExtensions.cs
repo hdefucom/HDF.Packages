@@ -47,8 +47,56 @@ public static class StringExtensions
     public static string Join(this IEnumerable<string> values, string separator) => string.Join(separator, values);
 
 
+    /// <summary>
+    /// 将字符串中的一个或多个格式项替换为指定对象的字符串表示形式
+    /// </summary>
+    /// <remarks>
+    /// string.Format的拓展，可实现实体类属性访问<br/>
+    /// 普通Format用法：string.Format("name:{0}","hdf")<br/>
+    /// 此拓展："name is {0:name},age is {0:age}".Format(new {name="hdf",age=22})
+    /// </remarks>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="format"></param>
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    public static string FormatObject<T>(this string format, T arg)
+    {
+        format = Regex.Replace(format, @"\{(\w+)\}", "{0:$1}");
+        return string.Format(new ObjectFormatProvider(), format, arg);
+    }
+
 }
 
+/// <summary>
+/// 字符格式化-->对象属性模式
+/// </summary>
+/// <remarks>
+/// 正常用法 string.Format("name:{0}","hdf")<br/>
+/// 此拓展用法 string.Format(new ObjectFormatProvider()，"name:{0:name},age{0:age}",new {name="hdf",age=22})<br/>
+/// </remarks>
+public class ObjectFormatProvider : IFormatProvider, ICustomFormatter
+{
+    /// <summary>
+    /// IFormatProvider实现
+    /// </summary>
+    /// <param name="format"></param>
+    /// <param name="arg"></param>
+    /// <param name="formatProvider"></param>
+    /// <returns></returns>
+    public string Format(string? format, object? arg, IFormatProvider? formatProvider)
+    {
+        if (format == null)
+            throw new ArgumentNullException(nameof(format));
+        return arg?.GetType()?.GetProperty(format)?.GetValue(arg, null)?.ToString() ?? "";
+    }
 
+    /// <summary>
+    /// ICustomFormatter实现
+    /// </summary>
+    /// <param name="formatType"></param>
+    /// <returns></returns>
+    public object? GetFormat(Type? formatType) => formatType == typeof(ICustomFormatter) ? this : default;
+
+}
 
 
