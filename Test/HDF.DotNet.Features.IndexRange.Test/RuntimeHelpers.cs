@@ -27,10 +27,10 @@ namespace System.Runtime.CompilerServices
 
                 if (length == 0)
                 {
-#if NET46_OR_GREATER || NETCOREAPP || NETSTANDARD
-                    return Array.Empty<T>();
-#else
+#if NET40
                     return new T[0];
+#else
+                    return Array.Empty<T>();
 #endif
                 }
 

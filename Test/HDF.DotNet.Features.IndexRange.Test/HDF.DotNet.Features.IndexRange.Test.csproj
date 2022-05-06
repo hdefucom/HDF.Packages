@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	  <TargetFrameworks>net40;netcoreapp2.1;netstandard2.0</TargetFrameworks>
@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\HDF.DotNet.Features.IndexRange\HDF.DotNet.Features.IndexRange.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="RuntimeHelpers.cs">
+      <PackagePath>contentFiles</PackagePath>
+      <Pack>true</Pack>
+    </Compile>
   </ItemGroup>
 
 </Project>

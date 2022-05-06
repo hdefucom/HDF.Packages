@@ -1,4 +1,9 @@
-﻿
+﻿#if NETCOREAPP3_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+
+using System.Runtime.CompilerServices;
+[assembly: TypeForwardedTo(typeof(System.Index))]
+
+#else
 using System.Runtime.CompilerServices;
 
 namespace System
@@ -146,3 +151,4 @@ namespace System
 
 
 }
+#endif
