@@ -11,12 +11,12 @@
 		<Authors>DefuHuang</Authors>
 		<Company>HDF</Company>
 		<Description>
-			给SDK-Style，同时.Net版本低于.Net5的项目提供C#9.0的init特性。
-			To SDK style, at the same time Net version is lower than The net5 project provides the init feature of c#9.0.
+			给SDK-Style，同时.Net版本低于.Net5的项目提供C#9.0的init和record特性。
+			To SDK style, at the same time Net version is lower than The Net5.0 project provides the init and record features of C#9.0.
 		</Description>
 
 		<VersionPrefix>1.0.0</VersionPrefix>
-		<VersionSuffix>preview.1</VersionSuffix>
+		<!--<VersionSuffix>preview.1</VersionSuffix>-->
 
 		<PackageProjectUrl>https://github.com/hdefucom/HDF.Packages</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hdefucom/HDF.Packages</RepositoryUrl>
