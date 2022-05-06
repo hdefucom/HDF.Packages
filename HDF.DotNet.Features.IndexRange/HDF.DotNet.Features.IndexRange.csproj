@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net40;netcoreapp2.1;netstandard2.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+		<PackageIcon>logo.png</PackageIcon>
+		<Authors>DefuHuang</Authors>
+		<Company>HDF</Company>
+		<Description>
+			给SDK-Style，同时.Net版本低于.NetCore3.0的项目提供C#8.0的Index和Range特性。
+			To SDK style, at the same time .Net version is lower than NetCore3.0 project provides the index and range features of C#8.0.
+		</Description>
+
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<!--<VersionSuffix>preview.1</VersionSuffix>-->
+
+		<PackageProjectUrl>https://github.com/hdefucom/HDF.Packages</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/hdefucom/HDF.Packages</RepositoryUrl>
+		<PackageTags>HDF Common Tool Init</PackageTags>
+		<NeutralLanguage>zh</NeutralLanguage>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="logo.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	</ItemGroup>
+
+
+
+
+</Project>
