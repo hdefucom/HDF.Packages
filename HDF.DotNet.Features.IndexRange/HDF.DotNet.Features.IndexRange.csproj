@@ -15,7 +15,7 @@
 			To SDK style, at the same time .Net version is lower than NetCore3.0 project provides the index and range features of C#8.0.
 		</Description>
 
-		<VersionPrefix>1.0.1</VersionPrefix>
+		<VersionPrefix>1.0.2</VersionPrefix>
 		<!--<VersionSuffix>preview.1</VersionSuffix>-->
 
 		<PackageProjectUrl>https://github.com/hdefucom/HDF.Packages</PackageProjectUrl>
@@ -36,13 +36,12 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="$(TargetFramework) == 'net40'" >
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 	</ItemGroup>
 
-
 	<ItemGroup>
-		<Compile Include="Index.cs;Range.cs"/>
+		<Compile Include="Index.cs;Range.cs" />
 		<Compile Include="RuntimeHelpers.cs">
 			<Pack>true</Pack>
 			<PackagePath>contentFiles/cs/any</PackagePath>

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace System.Runtime.CompilerServices
 {
-    public static partial class RuntimeHelpers
+    internal static partial class RuntimeHelpers
     {
         /// <summary>
         /// Slices the specified array using the specified range.

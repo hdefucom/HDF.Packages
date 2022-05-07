@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>net40;netcoreapp2.1;netstandard2.0</TargetFrameworks>
+	  <!--<TargetFrameworks>net40;netcoreapp2.1;netstandard2.0</TargetFrameworks>-->
+		<TargetFrameworks>net40;net462;net47;net471;net472;net48;netcoreapp3.1;net5.0-windows;net6.0-windows;netcoreapp2.1;netstandard2.0;netstandard2.1</TargetFrameworks>
 	  <LangVersion>latest</LangVersion>
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -10,11 +11,5 @@
     <ProjectReference Include="..\..\HDF.DotNet.Features.IndexRange\HDF.DotNet.Features.IndexRange.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="RuntimeHelpers.cs">
-      <PackagePath>contentFiles</PackagePath>
-      <Pack>true</Pack>
-    </Compile>
-  </ItemGroup>
 
 </Project>
