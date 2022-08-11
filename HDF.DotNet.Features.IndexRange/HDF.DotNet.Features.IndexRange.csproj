@@ -30,13 +30,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="logo.png">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
+		<None Include="logo.png" Pack="true" PackagePath="\" />
+		<None Include="readme.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
-	<ItemGroup Condition="$(TargetFramework) == 'net40'" >
+	<ItemGroup Condition="$(TargetFramework) == 'net40'">
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 	</ItemGroup>
 
@@ -46,6 +44,12 @@
 			<Pack>true</Pack>
 			<PackagePath>contentFiles/cs/any</PackagePath>
 		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="readme.md">
+	    <SubType>Component</SubType>
+	  </None>
 	</ItemGroup>
 
 
