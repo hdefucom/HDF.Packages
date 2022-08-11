@@ -8,6 +8,7 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
 		<PackageIcon>logo.png</PackageIcon>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<Authors>DefuHuang</Authors>
 		<Company>HDF</Company>
 		<Description>
@@ -15,7 +16,7 @@
 			To SDK style, at the same time .Net version is lower than NetCore3.0 project provides the index and range features of C#8.0.
 		</Description>
 
-		<VersionPrefix>1.0.2</VersionPrefix>
+		<VersionPrefix>1.1.0</VersionPrefix>
 		<!--<VersionSuffix>preview.1</VersionSuffix>-->
 
 		<PackageProjectUrl>https://github.com/hdefucom/HDF.Packages</PackageProjectUrl>
