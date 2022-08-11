@@ -32,10 +32,8 @@ HDF public class library provides the expansion of basic types and some common m
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include="logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+	  <None Include="logo.png" Pack="true" PackagePath="\" />
+	  <None Include="readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
@@ -45,6 +43,11 @@ HDF public class library provides the expansion of basic types and some common m
   <!--Windows文件夹下的拓展基本都是只用于Windows平台的-->
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0'">
     <Compile Remove="Windows\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="readme.md">
+      <SubType>Component</SubType>
+    </None>
   </ItemGroup>
 
 
